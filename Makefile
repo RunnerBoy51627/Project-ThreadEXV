@@ -5,7 +5,7 @@ include util.mk
 # Default target
 default: all
 
-TARGET_STRING := sm64-60threaded
+TARGET_STRING := Project-ThreadEXV
 
 # Preprocessor definitions
 DEFINES :=
@@ -121,7 +121,7 @@ endif
 
 # TEXT ENGINES
 #   s2dex_text_engine - Text Engine by someone2639
-TEXT_ENGINE := none
+TEXT_ENGINE := s2dex_text_engine
 $(eval $(call validate-option,TEXT_ENGINE,none s2dex_text_engine))
 
 ifeq ($(TEXT_ENGINE), s2dex_text_engine)

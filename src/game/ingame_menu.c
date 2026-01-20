@@ -1612,22 +1612,35 @@ void render_pause_red_coins(void) {
 /// By default, not needed as puppycamera has an option, but should you wish to revert that, you are legally allowed.
 
 #if defined(WIDE) && !defined(PUPPYCAM)
+
 void render_widescreen_setting(void) {
+    static s32 inputCooldown = 0;
+
+    if (inputCooldown > 0) {
+        inputCooldown--;
+    }
+
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+
     if (!gConfig.widescreen) {
         print_generic_string(10, 20, textCurrRatio43);
-        print_generic_string(10,  7, textPressL);
     } else {
         print_generic_string(10, 20, textCurrRatio169);
-        print_generic_string(10,  7, textPressL);
     }
+
+    print_generic_string(10, 7, textPressL);
+
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-    if (gPlayer1Controller->buttonPressed & L_TRIG){
+
+    if ((gPlayer1Controller->buttonPressed & L_TRIG) && inputCooldown == 0) {
         gConfig.widescreen ^= 1;
         save_file_set_widescreen_mode(gConfig.widescreen);
+
+        inputCooldown = 120; // 2 seconds @ 60 FPS
     }
 }
+
 #endif
 
 #if defined(VERSION_JP) || defined(VERSION_SH)
